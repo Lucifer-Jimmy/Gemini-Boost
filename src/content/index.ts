@@ -1,6 +1,7 @@
 import { createElement } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 import { FoldersPanel } from '../features/folders'
+import { initializeModelStar } from '../features/modelStar'
 
 const MOUNT_ID = 'gs-folders-root'
 const SIDEBAR_HOST_SELECTORS = [
@@ -89,7 +90,10 @@ const observer = new MutationObserver(() => {
 observer.observe(document.body, { childList: true, subtree: true })
 mountFoldersTree()
 
+const cleanupModelStar = initializeModelStar()
+
 window.addEventListener('beforeunload', () => {
 	observer.disconnect()
 	root?.unmount()
+	cleanupModelStar()
 })
