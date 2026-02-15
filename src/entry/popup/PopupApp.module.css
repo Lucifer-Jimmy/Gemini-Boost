@@ -1,0 +1,19 @@
+.gsPopup {
+  min-width: 240px;
+  padding: 16px;
+  font-family: 'Segoe UI', sans-serif;
+  color: #1f1f1f;
+  background: #ffffff;
+}
+
+.gsTitle {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.gsSubtitle {
+  margin: 0;
+  font-size: 12px;
+  color: #5f6368;
+}

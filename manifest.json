@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "Gemini Boost",
+  "version": "1.0.0",
+  "action": { "default_popup": "index.html" },
+  "permissions": ["identity", "scripting", "storage"],
+  "host_permissions": ["https://gemini.google.com/*"],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; worker-src 'self'"
+  },
+  "content_scripts": [
+    {
+      "js": ["src/content/index.ts"],
+      "matches": ["https://gemini.google.com/*"],
+      "run_at": "document_end"
+    }
+  ]
+}
