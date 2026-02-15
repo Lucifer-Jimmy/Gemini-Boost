@@ -318,24 +318,37 @@
   color: #444746;
   cursor: pointer;
   padding: 0;
-  transition: background-color 0.1s, color 0.1s;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .iconButton:hover {
   background-color: rgba(31, 31, 31, 0.08);
   color: #1f1f1f;
+  transform: scale(1.05);
+}
+
+.iconButton:active {
+  transform: scale(0.95);
 }
 
 .iconButtonPinned {
   display: flex;
   opacity: 1 !important;
-  color: #1f1f1f;
+  color: #ea8600;
+  background-color: rgba(234, 134, 0, 0.08);
+}
+
+.iconButtonPinned:hover {
+  color: #ea8600;
+  background-color: rgba(234, 134, 0, 0.16);
+  transform: scale(1.1) rotate(12deg);
 }
 
 .iconButton svg {
   width: 18px;
   height: 18px;
   fill: currentColor;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -354,10 +367,22 @@
   .iconButton:hover {
     background-color: rgba(227, 227, 227, 0.08);
     color: #e3e3e3;
+    transform: scale(1.05);
+  }
+  
+  .iconButton:active {
+    transform: scale(0.95);
   }
   
   .iconButtonPinned {
-    color: #e3e3e3;
+    color: #ffa726;
+    background-color: rgba(255, 167, 38, 0.12);
+  }
+  
+  .iconButtonPinned:hover {
+    color: #ffa726;
+    background-color: rgba(255, 167, 38, 0.2);
+    transform: scale(1.1) rotate(12deg);
   }
 }
 
@@ -380,11 +405,25 @@
 :global(html[data-theme="dark"]) .iconButton:hover {
   background-color: rgba(227, 227, 227, 0.08);
   color: #e3e3e3;
+  transform: scale(1.05);
+}
+
+:global(body.dark-theme) .iconButton:active,
+:global(html[data-theme="dark"]) .iconButton:active {
+  transform: scale(0.95);
 }
 
 :global(body.dark-theme) .iconButtonPinned,
 :global(html[data-theme="dark"]) .iconButtonPinned {
-  color: #e3e3e3;
+  color: #ffa726;
+  background-color: rgba(255, 167, 38, 0.12);
+}
+
+:global(body.dark-theme) .iconButtonPinned:hover,
+:global(html[data-theme="dark"]) .iconButtonPinned:hover {
+  color: #ffa726;
+  background-color: rgba(255, 167, 38, 0.2);
+  transform: scale(1.1) rotate(12deg);
 }
 
 
@@ -456,18 +495,19 @@
   margin-right: 2px;
   color: #444746;
   border-radius: 50%;
-  transition: background-color 0.1s;
+  transition: background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .chevronIcon:hover {
-  background-color: rgba(68, 71, 70, 0.08); /* Unified hover effect */
+  background-color: rgba(68, 71, 70, 0.08);
 }
 
 .chevronIcon svg {
   width: 20px;
   height: 20px;
   fill: currentColor;
-  transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center center;
 }
 
 .chevronIcon.expanded svg {
@@ -563,17 +603,18 @@
   overflow: hidden;
   max-height: 2000px;
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
+  transform-origin: top center;
   transition:
-    max-height 220ms cubic-bezier(0.2, 0, 0, 1),
-    opacity 160ms cubic-bezier(0.2, 0, 0, 1),
-    transform 220ms cubic-bezier(0.2, 0, 0, 1);
+    max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .folderChildrenCollapsed {
   max-height: 0;
   opacity: 0;
-  transform: translateY(-4px);
+  transform: translateY(-8px) scale(0.95);
   pointer-events: none;
 }
 
@@ -625,14 +666,6 @@
   font-size: 0.875rem;
   font-weight: 400;
   overflow: hidden;
-}
-
-.chatIcon {
-  flex-shrink: 0;
-  width: 16px;
-  height: 16px;
-  fill: currentColor;
-  opacity: 0.6;
 }
 
 .chatTitle {

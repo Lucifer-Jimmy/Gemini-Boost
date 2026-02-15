@@ -5,7 +5,6 @@ import type { ConversationItem, ConversationMap, Folder } from '../types'
 
 type UseFoldersLogicResult = {
   folders: Folder[]
-  conversationMap: ConversationMap
   loading: boolean
   addFolder: (name: string, parentId?: string | null) => Promise<void>
   renameFolder: (folderId: string, name: string) => Promise<void>
@@ -151,7 +150,6 @@ export const useFoldersLogic = (): UseFoldersLogicResult => {
 
   return {
     folders,
-    conversationMap,
     loading,
     addFolder,
     renameFolder,
