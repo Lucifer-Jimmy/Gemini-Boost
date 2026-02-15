@@ -173,18 +173,30 @@
 
 .confirmButton {
   color: #0b57d0;
+  animation: deleteConfirmFadeIn 0.2s linear;
 }
 
 .confirmButton:hover {
   background-color: rgba(11, 87, 208, 0.08);
+  transform: scale(1.08);
+}
+
+.confirmButton:active {
+  transform: scale(0.95);
 }
 
 .cancelButton {
   color: #444746;
+  animation: deleteConfirmFadeIn 0.2s linear;
 }
 
 .cancelButton:hover {
   background-color: rgba(68, 71, 70, 0.08);
+  transform: scale(1.08);
+}
+
+.cancelButton:active {
+  transform: scale(0.95);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -199,11 +211,29 @@
     border-color: #a8c7fa;
   }
   
-  .confirmButton { color: #a8c7fa; }
-  .confirmButton:hover { background-color: rgba(168, 199, 250, 0.08); }
+  .confirmButton { 
+    color: #a8c7fa;
+    animation: deleteConfirmFadeIn 0.2s linear;
+  }
+  .confirmButton:hover { 
+    background-color: rgba(168, 199, 250, 0.08);
+    transform: scale(1.08);
+  }
+  .confirmButton:active { 
+    transform: scale(0.95);
+  }
   
-  .cancelButton { color: #c4c7c5; }
-  .cancelButton:hover { background-color: rgba(196, 199, 197, 0.08); }
+  .cancelButton { 
+    color: #c4c7c5;
+    animation: deleteConfirmFadeIn 0.2s linear;
+  }
+  .cancelButton:hover { 
+    background-color: rgba(196, 199, 197, 0.08);
+    transform: scale(1.08);
+  }
+  .cancelButton:active { 
+    transform: scale(0.95);
+  }
 }
 
 :global(body.dark-theme) .nameInput,
@@ -222,21 +252,35 @@
 :global(body.dark-theme) .confirmButton,
 :global(html[data-theme="dark"]) .confirmButton {
   color: #a8c7fa;
+  animation: deleteConfirmFadeIn 0.2s linear;
 }
 
 :global(body.dark-theme) .confirmButton:hover,
 :global(html[data-theme="dark"]) .confirmButton:hover {
   background-color: rgba(168, 199, 250, 0.08);
+  transform: scale(1.08);
+}
+
+:global(body.dark-theme) .confirmButton:active,
+:global(html[data-theme="dark"]) .confirmButton:active {
+  transform: scale(0.95);
 }
 
 :global(body.dark-theme) .cancelButton,
 :global(html[data-theme="dark"]) .cancelButton {
   color: #c4c7c5;
+  animation: deleteConfirmFadeIn 0.2s linear;
 }
 
 :global(body.dark-theme) .cancelButton:hover,
 :global(html[data-theme="dark"]) .cancelButton:hover {
   background-color: rgba(196, 199, 197, 0.08);
+  transform: scale(1.08);
+}
+
+:global(body.dark-theme) .cancelButton:active,
+:global(html[data-theme="dark"]) .cancelButton:active {
+  transform: scale(0.95);
 }
 
 .folderList {
@@ -248,6 +292,24 @@
   list-style: none;
 }
 
+@keyframes itemDelete {
+  0% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  60% {
+    opacity: 0.3;
+    transform: translateX(-20px) scale(0.9);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-40px) scale(0.7);
+    max-height: 0;
+    padding: 0;
+    margin: 0;
+  }
+}
+
 .folderItem {
   display: flex;
   align-items: center;
@@ -257,7 +319,7 @@
   cursor: pointer;
   color: #1f1f1f;
   text-decoration: none;
-  transition: background-color 0.1s cubic-bezier(0.2, 0, 0, 1);
+  transition: background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .folderItem:hover {
@@ -293,12 +355,23 @@
   color: inherit;
 }
 
+@keyframes deleteConfirmFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .folderActions {
   display: flex;
   align-items: center;
+  position: relative;
   gap: 4px;
   opacity: 0;
-  transition: opacity 0.1s cubic-bezier(0.2, 0, 0, 1);
+  /* 纯淡入淡出效果，无位移动画 */
+  transition: opacity 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .folderItem:hover .folderActions,
@@ -427,17 +500,35 @@
 }
 
 
+@keyframes popupMenuFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .popupMenu {
   position: absolute;
-  right: 12px;
+  top: calc(100% + 4px);
+  right: 0;
   background-color: #fff;
-  border-radius: 4px;
-  box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 2px 6px 2px rgba(60,64,67,0.15);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   display: flex;
   flex-direction: column;
   padding: 4px 0;
   z-index: 100;
   min-width: 120px;
+  animation: popupMenuFadeIn 0.18s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+  transform-origin: top right;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .popupMenu {
+    animation: none;
+  }
 }
 
 .popupMenu button {
@@ -449,16 +540,23 @@
   color: #1f1f1f;
   font-family: inherit;
   font-size: 14px;
+  border-radius: 4px;
+  margin: 0 4px;
+  transition: background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .popupMenu button:hover {
-  background-color: rgba(68, 71, 70, 0.08); /* Unified hover effect */
+  background-color: rgba(68, 71, 70, 0.08);
+}
+
+.popupMenu button:active {
+  background-color: rgba(68, 71, 70, 0.12);
 }
 
 @media (prefers-color-scheme: dark) {
   .popupMenu {
     background-color: #282a2c;
-    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.3), 0 2px 6px 2px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
   }
   
   .popupMenu button {
@@ -467,6 +565,10 @@
   
   .popupMenu button:hover {
     background-color: rgba(227, 227, 227, 0.08);
+  }
+  
+  .popupMenu button:active {
+    background-color: rgba(227, 227, 227, 0.12);
   }
 }
 
@@ -483,6 +585,11 @@
 :global(body.dark-theme) .popupMenu button:hover,
 :global(html[data-theme="dark"]) .popupMenu button:hover {
   background-color: rgba(227, 227, 227, 0.08);
+}
+
+:global(body.dark-theme) .popupMenu button:active,
+:global(html[data-theme="dark"]) .popupMenu button:active {
+  background-color: rgba(227, 227, 227, 0.12);
 }
 
 
@@ -600,32 +707,28 @@
 
 /* Chat List Styles */
 .folderChildren {
-  overflow: hidden;
-  max-height: 2000px;
+  display: grid;
+  grid-template-rows: 1fr;
   opacity: 1;
-  transform: translateY(0) scale(1);
-  transform-origin: top center;
   transition:
-    max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    grid-template-rows 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.folderChildrenInner {
+  min-height: 0;
+  overflow: hidden;
 }
 
 .folderChildrenCollapsed {
-  max-height: 0;
+  grid-template-rows: 0fr;
   opacity: 0;
-  transform: translateY(-8px) scale(0.95);
   pointer-events: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .folderChildren {
     transition: none;
-    transform: none;
-  }
-
-  .folderChildrenCollapsed {
-    transform: none;
   }
 }
 
@@ -645,7 +748,11 @@
   position: relative;
   margin: 0;
   border-radius: 16px;
-  transition: background-color 0.1s cubic-bezier(0.2, 0, 0, 1);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chatItem:active {
+  transform: scale(0.98);
 }
 
 .chatItem:hover {
@@ -689,7 +796,11 @@
   color: #5f6368;
   border-radius: 50%;
   padding: 0;
-  transition: all 0.1s cubic-bezier(0.2, 0, 0, 1);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.removeChatButton:hover {
+  transform: rotate(90deg) scale(1.1);
 }
 
 .chatItem:hover .removeChatButton {
@@ -703,12 +814,13 @@
 }
 
 .removeChatButton:hover {
-  background-color: rgba(68, 71, 70, 0.12);
-  color: #1f1f1f;
+  background-color: rgba(239, 83, 80, 0.12);
+  color: #ef5350;
 }
 
 .removeChatButton:active {
-  background-color: rgba(68, 71, 70, 0.16);
+  background-color: rgba(239, 83, 80, 0.2);
+  transform: rotate(90deg) scale(0.9);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -725,12 +837,13 @@
   }
 
   .removeChatButton:hover {
-    background-color: rgba(227, 227, 227, 0.12);
-    color: #e3e3e3;
+    background-color: rgba(244, 67, 54, 0.12);
+    color: #f44336;
   }
 
   .removeChatButton:active {
-    background-color: rgba(227, 227, 227, 0.16);
+    background-color: rgba(244, 67, 54, 0.2);
+    transform: rotate(90deg) scale(0.9);
   }
 }
 
@@ -751,12 +864,45 @@
 
 :global(body.dark-theme) .removeChatButton:hover,
 :global(html[data-theme='dark']) .removeChatButton:hover {
-  background-color: rgba(227, 227, 227, 0.12);
-  color: #e3e3e3;
+  background-color: rgba(244, 67, 54, 0.12);
+  color: #f44336;
 }
 
 :global(body.dark-theme) .removeChatButton:active,
 :global(html[data-theme='dark']) .removeChatButton:active {
-  background-color: rgba(227, 227, 227, 0.16);
+  background-color: rgba(244, 67, 54, 0.2);
+  transform: rotate(90deg) scale(0.9);
 }
 
+/* Accessibility: Disable animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .confirmButton,
+  .cancelButton,
+  .iconButton,
+  .iconButtonPinned,
+  .removeChatButton,
+  .folderItem,
+  .chatItem,
+  .popupMenu button {
+    animation: none !important;
+    transition: background-color 0.1s ease, color 0.1s ease, opacity 0.1s ease !important;
+  }
+  
+  .confirmButton:hover,
+  .cancelButton:hover,
+  .iconButton:hover,
+  .iconButtonPinned:hover,
+  .removeChatButton:hover,
+  .popupMenu button:hover {
+    transform: none !important;
+  }
+  
+  .confirmButton:active,
+  .cancelButton:active,
+  .iconButton:active,
+  .folderItem:active,
+  .chatItem:active,
+  .removeChatButton:active {
+    transform: none !important;
+  }
+}
