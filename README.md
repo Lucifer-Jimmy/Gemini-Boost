@@ -1,73 +1,83 @@
-# React + TypeScript + Vite
+# Gemini Boost
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Gemini Boost 是一款基于 Manifest V3 的 Chrome 浏览器扩展，旨在增强 Google Gemini 的功能和用户体验。
 
-Currently, two official plugins are available:
+## ✨ 核心功能
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **📁 文件夹管理 (Folders)**: 支持将聊天记录分类到自定义文件夹中，支持拖拽操作。
+- **⭐ 模型收藏 (Model Star)**: 快速收藏和访问你最常用的 Gemini 模型。
+- **⏳ 时间线视图 (Timeline)**: 以时间线的方式浏览和管理历史对话。
 
-## React Compiler
+## 🛠️ 技术栈
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **框架**: [React 19](https://react.dev/) (Hooks)
+- **构建工具**: [Vite](https://vitejs.dev/) + [@crxjs/vite-plugin](https://crxjs.dev/)
+- **语言**: [TypeScript](https://www.typescriptlang.org/)
+- **样式**: CSS Modules + Tailwind CSS
+- **数据验证**: [Zod](https://zod.dev/)
+- **包管理器**: [Bun](https://bun.sh/)
 
-## Expanding the ESLint configuration
+## 🚀 快速开始
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 1. 安装依赖
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+确保你已经安装了 [Bun](https://bun.sh/)，然后在项目根目录下运行：
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+bun install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. 开发模式
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+启动支持热更新 (HMR) 的开发服务器：
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+bun run dev
 ```
+
+### 3. 构建生产版本
+
+编译 TypeScript 并打包项目：
+
+```bash
+bun run build
+```
+
+构建完成后，项目根目录下会生成一个 `dist` 文件夹。
+
+### 4. 在 Chrome 中加载扩展
+
+1. 打开 Chrome 浏览器，访问 `chrome://extensions/`。
+2. 开启右上角的 **“开发者模式” (Developer mode)**。
+3. 点击左上角的 **“加载已解压的扩展程序” (Load unpacked)**。
+4. 选择本项目生成的 `dist` 文件夹。
+
+## 🏗️ 项目架构
+
+本项目采用 **Feature-First (按功能划分)** 的领域驱动架构设计：
+
+```text
+src/
+├── app/                    # 全局类型和配置
+├── assets/                 # 静态资源
+├── content/                # Content Scripts 入口
+├── entry/                  # 扩展入口 (Popup, Content 等)
+├── features/               # 核心业务功能模块 (Folders, ModelStar, Timeline)
+└── shared/                 # 共享的 Hooks, Services 和 Components
+```
+
+### 架构原则
+- **功能内聚**: 相关的组件、Hooks、状态和逻辑都存放在 `src/features/[feature-name]/` 下。
+- **非破坏性注入**: 使用 React Portals 或独立的 Shadow DOM 根节点，不破坏 Gemini 原生行为。
+- **严格隔离**: 样式使用 CSS Modules 或 `gs-` 前缀避免样式污染。
+
+## 📜 脚本命令
+
+- `bun run dev`: 启动开发服务器
+- `bun run build`: 构建生产环境产物
+- `bun run lint`: 运行 ESLint 检查代码规范
+- `bun run preview`: 预览构建产物
+
+## 📄 许可证
+
+[MIT License](./LICENSE)
