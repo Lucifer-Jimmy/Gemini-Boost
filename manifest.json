@@ -2,7 +2,20 @@
   "manifest_version": 3,
   "name": "Gemini Boost",
   "version": "1.0.0",
-  "action": { "default_popup": "index.html" },
+  "description": "增强 Google Gemini 的功能和体验",
+  "icons": {
+    "16": "icon-16.png",
+    "48": "icon-48.png",
+    "128": "icon-128.png"
+  },
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": {
+      "16": "icon-16.png",
+      "48": "icon-48.png",
+      "128": "icon-128.png"
+    }
+  },
   "permissions": ["identity", "scripting", "storage"],
   "host_permissions": ["https://gemini.google.com/*"],
   "content_security_policy": {

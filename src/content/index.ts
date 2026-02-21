@@ -2,8 +2,11 @@ import { createElement } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 import { FoldersPanel } from '../features/folders'
 import { initializeModelStar } from '../features/modelStar'
+import { Timeline } from '../features/timeline'
 
 const MOUNT_ID = 'gs-folders-root'
+const TIMELINE_MOUNT_ID = 'gs-timeline-root'
+
 const SIDEBAR_HOST_SELECTORS = [
 	'infinite-scroller',
 	'nav[aria-label*="History"]',
@@ -62,6 +65,39 @@ const getOrCreateMount = (host: HTMLElement): HTMLElement => {
 let root: Root | null = null
 let mountedElement: HTMLElement | null = null
 
+let timelineRoot: Root | null = null
+let timelineMountedElement: HTMLElement | null = null
+
+const getOrCreateTimelineMount = (): HTMLElement => {
+	const existing = document.getElementById(TIMELINE_MOUNT_ID)
+	if (existing) {
+		return existing
+	}
+
+	const mount = document.createElement('div')
+	mount.id = TIMELINE_MOUNT_ID
+	mount.setAttribute('data-gs-mount', 'timeline')
+	document.body.appendChild(mount)
+
+	return mount
+}
+
+const mountTimeline = (): void => {
+	const mount = getOrCreateTimelineMount()
+
+	if (timelineMountedElement === mount && timelineRoot) {
+		return
+	}
+
+	if (timelineRoot) {
+		timelineRoot.unmount()
+	}
+
+	timelineRoot = createRoot(mount)
+	timelineRoot.render(createElement(Timeline))
+	timelineMountedElement = mount
+}
+
 const mountFoldersTree = (): void => {
 	const host = findSidebarHost()
 	if (!host) {
@@ -85,15 +121,18 @@ const mountFoldersTree = (): void => {
 
 const observer = new MutationObserver(() => {
 	mountFoldersTree()
+	mountTimeline()
 })
 
 observer.observe(document.body, { childList: true, subtree: true })
 mountFoldersTree()
+mountTimeline()
 
 const cleanupModelStar = initializeModelStar()
 
 window.addEventListener('beforeunload', () => {
 	observer.disconnect()
 	root?.unmount()
+	timelineRoot?.unmount()
 	cleanupModelStar()
 })

@@ -1,0 +1,177 @@
+.gsTimelineWrapper {
+  /* Light mode default variables */
+  --gs-tl-bg: var(--gds-sys-color-surface-container-low, rgba(255, 255, 255, 0.8));
+  --gs-tl-border: var(--gds-sys-color-outline-variant, rgba(0, 0, 0, 0.05));
+  --gs-tl-track: var(--gds-sys-color-surface-variant, #e3e3e3);
+  --gs-tl-dot: var(--gds-sys-color-outline, #747775);
+  --gs-tl-dot-active: var(--gds-sys-color-primary, #0b57d0);
+  --gs-tl-dot-cutout: var(--gds-sys-color-surface-container-low, #fff);
+  --gs-tl-text-bg: var(--gds-sys-color-surface-container-high, #fff);
+  --gs-tl-text-color: var(--gds-sys-color-on-surface, #1f1f1f);
+  --gs-tl-text-border: var(--gds-sys-color-outline-variant, #e3e3e3);
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Let clicks pass through the wrapper */
+  z-index: 9999;
+}
+
+/* Dark mode overrides */
+@media (prefers-color-scheme: dark) {
+  .gsTimelineWrapper {
+    --gs-tl-bg: var(--gds-sys-color-surface-container-low, rgba(30, 30, 30, 0.8));
+    --gs-tl-border: var(--gds-sys-color-outline-variant, rgba(255, 255, 255, 0.1));
+    --gs-tl-track: var(--gds-sys-color-surface-variant, #444746);
+    --gs-tl-dot: var(--gds-sys-color-outline, #8e918f);
+    --gs-tl-dot-active: var(--gds-sys-color-primary, #a8c7fa);
+    --gs-tl-dot-cutout: var(--gds-sys-color-surface-container-low, #1e1e1e);
+    --gs-tl-text-bg: var(--gds-sys-color-surface-container-high, #282a2c);
+    --gs-tl-text-color: var(--gds-sys-color-on-surface, #e3e3e3);
+    --gs-tl-text-border: var(--gds-sys-color-outline-variant, #444746);
+  }
+}
+
+/* Support Gemini's explicit dark mode class if present */
+:global(html[data-theme="dark"]) .gsTimelineWrapper,
+:global(body.dark-theme) .gsTimelineWrapper {
+  --gs-tl-bg: var(--gds-sys-color-surface-container-low, rgba(30, 30, 30, 0.8));
+  --gs-tl-border: var(--gds-sys-color-outline-variant, rgba(255, 255, 255, 0.1));
+  --gs-tl-track: var(--gds-sys-color-surface-variant, #444746);
+  --gs-tl-dot: var(--gds-sys-color-outline, #8e918f);
+  --gs-tl-dot-active: var(--gds-sys-color-primary, #a8c7fa);
+  --gs-tl-dot-cutout: var(--gds-sys-color-surface-container-low, #1e1e1e);
+  --gs-tl-text-bg: var(--gds-sys-color-surface-container-high, #282a2c);
+  --gs-tl-text-color: var(--gds-sys-color-on-surface, #e3e3e3);
+  --gs-tl-text-border: var(--gds-sys-color-outline-variant, #444746);
+}
+
+.gsTimelineContainer {
+  position: absolute;
+  right: 72px; /* Moved further away from right edge */
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  padding: 16px 8px;
+  background: var(--gs-tl-bg);
+  backdrop-filter: blur(12px);
+  border-radius: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+  max-height: 80vh;
+  overflow-y: auto;
+  transition: opacity 0.3s ease;
+  border: 1px solid var(--gs-tl-border);
+  pointer-events: auto; /* Re-enable clicks for the container */
+}
+
+/* Hide scrollbar for a cleaner look */
+.gsTimelineContainer::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+.gsTimelineTrack {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Increased gap for better touch target */
+  padding: 8px 0;
+}
+
+/* The continuous line behind dots */
+.gsTimelineTrack::before {
+  content: '';
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  background-color: var(--gs-tl-track);
+  border-radius: 1px;
+  z-index: 1;
+}
+
+.gsTimelineItem {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  min-height: 24px;
+  z-index: 2;
+}
+
+.gsTimelineDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--gs-tl-dot);
+  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+  flex-shrink: 0;
+  position: relative;
+  box-shadow: 0 0 0 2px var(--gs-tl-dot-cutout); /* Cutout effect */
+}
+
+.gsTimelineItem:hover .gsTimelineDot {
+  transform: scale(1.5);
+  background-color: var(--gs-tl-dot-active);
+  box-shadow: 0 0 0 2px var(--gs-tl-dot-cutout);
+}
+
+/* Global Tooltip Styles */
+.gsTimelineGlobalTooltip {
+  position: absolute;
+  right: 112px; /* 72px (container right) + 40px (approx container width) */
+  transform: translateY(-50%) translateX(8px) scale(0.95);
+  background: var(--gs-tl-text-bg);
+  color: var(--gs-tl-text-color);
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 1.4;
+  font-family: var(--gds-sys-typescale-body-medium-font, 'Google Sans Text', sans-serif);
+  white-space: normal;
+  word-break: break-word;
+  width: max-content;
+  max-width: 280px;
+  
+  /* Multi-line truncation */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  
+  opacity: 0;
+  visibility: hidden;
+  transform-origin: right center;
+  transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.05);
+  pointer-events: none;
+  z-index: 3;
+  border: 1px solid var(--gs-tl-text-border);
+}
+
+/* Add a small triangle/arrow pointing to the dot */
+.gsTimelineGlobalTooltip::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -5px;
+  transform: translateY(-50%) rotate(45deg);
+  width: 8px;
+  height: 8px;
+  background: var(--gs-tl-text-bg);
+  border-top: 1px solid var(--gs-tl-text-border);
+  border-right: 1px solid var(--gs-tl-text-border);
+  z-index: -1;
+}
+
+.gsTimelineGlobalTooltip.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) translateX(0) scale(1);
+}

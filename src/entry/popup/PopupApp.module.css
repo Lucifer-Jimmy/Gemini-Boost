@@ -1,19 +1,83 @@
 .gsPopup {
-  min-width: 240px;
-  padding: 16px;
-  font-family: 'Segoe UI', sans-serif;
-  color: #1f1f1f;
+  width: 280px;
+  padding: 24px 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: #202124;
   background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.gsHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.gsLogo {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .gsTitle {
-  margin: 0 0 6px;
-  font-size: 16px;
+  margin: 0;
+  font-size: 20px;
   font-weight: 600;
+  background: linear-gradient(90deg, #4285f4, #ea4335, #fbbc05, #34a853);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.5px;
+}
+
+.gsStatusContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e6f4ea;
+  padding: 6px 12px;
+  border-radius: 16px;
+  margin-bottom: 16px;
+}
+
+.gsStatusDot {
+  width: 8px;
+  height: 8px;
+  background-color: #34a853;
+  border-radius: 50%;
+  margin-right: 8px;
+  box-shadow: 0 0 0 2px rgba(52, 168, 83, 0.2);
+  animation: pulse 2s infinite;
+}
+
+.gsStatusText {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: #137333;
 }
 
 .gsSubtitle {
   margin: 0;
-  font-size: 12px;
+  font-size: 13px;
   color: #5f6368;
+  line-height: 1.4;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(52, 168, 83, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(52, 168, 83, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(52, 168, 83, 0);
+  }
 }
