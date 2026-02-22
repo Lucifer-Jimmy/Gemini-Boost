@@ -139,11 +139,9 @@
   width: max-content;
   max-width: 280px;
   
-  /* Multi-line truncation */
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
+  /* Strict overflow guard — JS handles truncation and appends '...' */
   overflow: hidden;
+  max-height: calc(3 * 1.4em); /* 3 lines at line-height 1.4 */
   
   opacity: 0;
   visibility: hidden;

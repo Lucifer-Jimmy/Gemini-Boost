@@ -23,9 +23,20 @@ export const useTimelineLogic = () => {
       const text = textElement.textContent?.trim() || ''
       if (!text) return
 
-      // Truncate text if it's too long (e.g., > 80 characters for multi-line)
-      const maxLength = 80
-      const displayText = text.length > maxLength ? `${text.substring(0, maxLength)}...` : text
+      const maxVisualWidth = 120
+      let visualWidth = 0
+      let cutIndex = text.length
+      for (let i = 0; i < text.length; i++) {
+        const code = text.codePointAt(i) || 0
+        visualWidth += code > 0x2E80 ? 2 : 1
+        // handle surrogate pairs
+        if (code > 0xFFFF) i++
+        if (visualWidth > maxVisualWidth) {
+          cutIndex = i
+          break
+        }
+      }
+      const displayText = cutIndex < text.length ? text.substring(0, cutIndex) + '...' : text
 
       // Generate a unique ID based on index and text to avoid unnecessary re-renders
       const id = `timeline-item-${index}-${text.substring(0, 10)}`

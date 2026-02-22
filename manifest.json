@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Gemini Boost",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "增强 Google Gemini 的功能和体验",
   "icons": {
     "16": "icon-16.png",
